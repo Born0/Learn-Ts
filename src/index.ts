@@ -22,7 +22,7 @@ employee=[
     [3,'abdul']
 ];
 
-//Union-------------pipe
+//Union-------------
 let pid:string | number;
 
 //Enum
@@ -33,7 +33,7 @@ enum Direction1{
     right
 }
 
-console.log(Direction1.up);
+//console.log(Direction1.up);
 
 enum Direction2{
     up='up',
@@ -64,6 +64,13 @@ const user1:User={
     name:'sai'
 }
 
+let user3:User | undefined;
+if(user3 !== undefined){
+    user3.id=3
+    user3.name='user 3'
+}
+
+
 //---------Type assertion
 let cid:any=1;
 let customerId=<number>cid;
@@ -73,12 +80,12 @@ let customerId=<number>cid;
 function add(a:number,b:number):number{
     return a+b;
 }
-console.log(add(1,2));
+//console.log(add(1,2));
 function logmsg(message:string):void{
     console.log(message);
 }
 
-logmsg('hello');
+//logmsg('hello');
 
 ///////
 ////------type can use unions, interface can't
@@ -103,21 +110,75 @@ const addfunc:MathFunc= (a:number,b:number):number=>a+b;
 const subfucn:MathFunc= (a:number,b:number):number=>a-b;
 
 //---------class
-class person{
-    private id:number;
-    public name:string;
+// class person{
+//     private id:number;
+//     public name:string;
+
+//     constructor(id:number, name:string){
+//         this.id=id;
+//         this.name=name;
+//     }
+
+// }
+
+// const abdul= new person(1,'abdul');
+// console.log(abdul.name);
+
+//-----------Interface Implement
+
+interface IPerson{
+    readonly id:number
+    name:string
+    register():string
+}
+
+class Person implements IPerson{
+     id:number;
+     name:string;
 
     constructor(id:number, name:string){
         this.id=id;
         this.name=name;
     }
+    register(): string {
+        return `Id:${id} and Name:${this.name}`
+    }
+} 
 
+const kamal = new Person(1,'kamal')
+//console.log(kamal.register());
+
+class Employee extends Person{
+    role:string;
+    constructor(id:number,name:string,role:string){
+        super(id,name);
+        this.role=role
+    }
 }
 
-const abdul= new person(1,'abdul');
+const emp= new Employee(1,'emp1','employee')
+console.log(emp.register());
 
-//console.log(abdul.id); //   private, gives error
-console.log(abdul.name);
+//---------Generic
+//-bad
+// function getArray(item: any[]): any[]{
+//     return new Array().concat(item);
+// }
 
+// let numArr= getArray([1,2,3,4,5])
+// let strArr= getArray(["hello", "there"])
 
+//--good
+function getArray<T>(item: T[]): T[]{
+    return new Array().concat(item);
+}
+
+let numArr= getArray<number>([1,2,3,4,5])
+let strArr= getArray<string>(["hello", "there"])
+
+//numArr.push('who')----------gives error 
+
+// for(var i of strArr){
+//     console.log(i);
+// }
 
